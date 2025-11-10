@@ -1,7 +1,7 @@
 document.getElementById('optionsForm').addEventListener('submit', function (e) {
   e.preventDefault();
   const blurIntensity = parseInt(document.getElementById('blurIntensity').value);
-  const blurringEnabled = document.getElementById("toggleButton").checked;
+  const blurringEnabled = true; // Always enabled since we removed the toggle
   const regexPatterns = document.getElementById('regexPatterns').value;
   const unblurOnHover = document.getElementById('unblurOnHover').checked;
   const blurMode = document.querySelector('input[name="blurMode"]:checked').value;
@@ -37,29 +37,6 @@ document.getElementById('optionsForm').addEventListener('submit', function (e) {
   }, 800);
 });
 
-// Handle toggle button changes
-document.getElementById('toggleButton').addEventListener('change', function () {
-  const blurringEnabled = this.checked;
-  const blurIntensity = parseInt(document.getElementById('blurIntensity').value);
-  const regexPatterns = document.getElementById('regexPatterns').value;
-  const unblurOnHover = document.getElementById('unblurOnHover').checked;
-  const blurMode = document.querySelector('input[name="blurMode"]:checked').value;
-
-  chrome.storage.sync.set({ blurringEnabled: blurringEnabled });
-
-  // Notify content script to update blurring state
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {
-      blurringEnabled: blurringEnabled,
-      blurIntensity: blurIntensity,
-      regexPatterns: regexPatterns,
-      unblurOnHover: unblurOnHover,
-      blurMode: blurMode,
-      from: "popup"
-    });
-  });
-});
-
 // Handle blur mode changes
 document.addEventListener('change', function (e) {
   if (e.target.name === 'blurMode') {
@@ -70,11 +47,6 @@ document.addEventListener('change', function (e) {
       patternsSection.style.display = 'block';
     }
   }
-});
-
-// Handle close button
-document.getElementById('closeButton').addEventListener('click', function () {
-  window.close();
 });
 
 // Load saved settings
@@ -95,9 +67,6 @@ chrome.storage.sync.get(['blurIntensity', 'regexPatterns', 'blurringEnabled', 'u
     patternsSection.style.display = 'block';
   }
 
-  if (data.blurringEnabled) {
-    document.getElementById('toggleButton').setAttribute("checked", true);
-  } else {
-    document.getElementById('toggleButton').removeAttribute("checked");
-  }
+  // Always enable blurring since we removed the toggle
+  chrome.storage.sync.set({ blurringEnabled: true });
 });
