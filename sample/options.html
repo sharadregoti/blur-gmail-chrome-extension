@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Email Blurrer Options</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Email Blurrer Options</h1>
+  <form id="optionsForm">
+    <label>
+      Blur Intensity (px):
+      <input type="number" id="blurIntensity" min="1" max="20">
+    </label>
+
+    <label>
+      Regex Patterns (comma-separated):
+      <textarea id="regexPatterns" rows="4" cols="50"
+        placeholder="e.g., urgent, confidential, bank.*statement"></textarea>
+      <small style="display: block; color: #666; margin-top: 5px;">
+        Enter comma-separated regex patterns. Messages matching any pattern will be blurred.
+        Examples: "urgent", "confidential", "bank.*statement", "\d{4}-\d{4}-\d{4}"
+      </small>
+    </label>
+
+    <label>
+      <input type="checkbox" id="enableBlurring" checked>
+      Enable blurring
+    </label>
+
+    <button type="submit">Save</button>
+  </form>
+  <script src="options.js"></script>
+</body>
+
+</html>
